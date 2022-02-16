@@ -18,6 +18,17 @@
 #define DEBUG 1
 #endif
 
+int changeCWD(char* input)
+{
+    int change = chdir(input);
+    if (change == -1)
+    {
+        printf("Can't chdir to %s\n", input);
+        // exit(1);
+    }
+    return change;
+}
+
 int main(int argc, char *argv[])
 {
     // if(argc != 2)
@@ -39,7 +50,7 @@ int main(int argc, char *argv[])
 
     while(1)
     {
-        printf("$ ");
+        printf("%s$ ", cwd);
         //Get the user's input
         fgets(str, MAX_SIZE, stdin);
 
@@ -48,22 +59,32 @@ int main(int argc, char *argv[])
         printf(str);
         printf("%s : %s = %i\n",str, exit, strcmp(str, exit));*/
         
-        printf("Line read: %s", str);
+        // printf("Line read: %s", str);
         token = strtok(str, s);
         int count = 0;
-        printf("Token(s):\n");
+        // printf("Token(s):\n");
         // Go through every token using " " as the key to separate each
         while(token != NULL)
         {
             if(count == 0)
             {
                 //if the first token is cd, pwd, or exit, exicute the command and break loop
-                if(DEBUG)
+                if(DEBUG && 1)
                 {
-                    printf("str==pwd: %d\n", strcmp(token, "pwd\n"));
+                    // printf("str==pwd: %d\n", strcmp(token, "pwd\n"));
+                    // printf("str==cd: %d\n", strcmp(token, "cd"));
+                    // printf("str==pwd: %d\n", strcmp(token, "pwd\n"));
                 }
-                if(!strcmp(token, "cd\n"))
+                if(!strcmp(token, "cd"))
                 {
+                    
+                    token = strtok(NULL, s);
+                    token[strlen(token) - 1] = 0; //remove the "/n" from the end of the string
+                    if(DEBUG && 1)
+                    {
+                        printf("cd to %s!\n", token);
+                    }
+                    changeCWD(token);
                     //move cwd to 2nd arg
                     // int change = chdir(argv[1]);
                     // if (change == -1)
@@ -71,16 +92,18 @@ int main(int argc, char *argv[])
                     //     printf("Can't chdir to %s\n", argv[1]);
                     //     exit(1);
                     // }
+                    getcwd(cwd, MAX_SIZE);
+                    break;
                 }
                 else if(!strcmp(token, "pwd\n"))
                 {
-                    printf("pwd: %s\n", cwd);
+                    printf("%s\n", cwd);
+                    break;
                 }
                 else if(!strcmp(token, "exit\n"))
                 {
                     exit(0);
                 }
-                break;
             }
             printf(" %s", token);
             token = strtok(NULL, s);
@@ -88,7 +111,10 @@ int main(int argc, char *argv[])
                 printf("\n");
             count++;
         }
-        printf("%i token(s) read\n\n", count);
+        if(DEBUG && 0)
+        {
+            printf("%i token(s) read\n\n", count);
+        }
     }    
     return 0;
 
