@@ -11,6 +11,8 @@
 #include <unistd.h>
 #include <string.h>
 
+#include <errno.h>
+
 #ifndef MAX_SIZE
 #define MAX_SIZE 256
 #endif
@@ -23,10 +25,16 @@ int changeCWD(char* input)
     int change = chdir(input);
     if (change == -1)
     {
-        printf("Can't chdir to %s\n", input);
+        // printf("Can't chdir to %s\n", input);
+        // printf("Error 2 (No such file or directory)\n");
+        printf("Error: %d, %s\n", errno, strerror(errno));
         // exit(1);
     }
     return change;
+}
+
+int exe() {
+
 }
 
 int main(int argc, char *argv[])
@@ -80,7 +88,7 @@ int main(int argc, char *argv[])
                     
                     token = strtok(NULL, s);
                     token[strlen(token) - 1] = 0; //remove the "/n" from the end of the string
-                    if(DEBUG && 1)
+                    if(DEBUG && 0)
                     {
                         printf("cd to %s!\n", token);
                     }
