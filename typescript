@@ -1,0 +1,9 @@
+Script started on 2022-02-17 23:30:18-06:00 [TERM="xterm-256color" TTY="/dev/pts/0" COLUMNS="74" LINES="14"]
+jay@jay-VirtualBox:~/Desktop/TECHSHELL/_TECHSHELL$ ./techshell 
+/home/jay/Desktop/TECHSHELL/_TECHSHELL$ cd Desktop
+Error: 2, No such file or directory
+/home/jay/Desktop/TECHSHELL/_TECHSHELL$ exit
+jay@jay-VirtualBox:~/Desktop/TECHSHELL/_TECHSHELL$ exit
+exit
+
+Script done on 2022-02-17 23:30:47-06:00 [COMMAND_EXIT_CODE="0"]

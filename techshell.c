@@ -33,11 +33,21 @@ int changeCWD(char* input)
     return change;
 }
 
-int exe() {
-
+void exe(char* command, char* args[]) {
+    if(fork() == 0)
+    {
+        // char* args[4] = {args[2], rand1s, rand2s, NULL};
+        fflush(stdout);
+        // execvp(strdup(command), args);
+        
+        // printf("Error: %d, %s\n", errno, strerror(errno));
+        printf("execvp failed\n");
+        exit(1);
+    }
+    wait(NULL);
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char *argv)
 {
     // if(argc != 2)
     // {
@@ -113,11 +123,18 @@ int main(int argc, char *argv[])
                     exit(0);
                 }
             }
+
+            // run command
+            char* args[3] = {"ls", "-l", NULL};
+            exe(token, args);
+
             printf(" %s", token);
             token = strtok(NULL, s);
             if(token != NULL)
                 printf("\n");
             count++;
+
+
         }
         if(DEBUG && 0)
         {
