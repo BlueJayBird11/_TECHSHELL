@@ -39,9 +39,16 @@ void exe(char* command, char* args[]) {
         // char* args[4] = {args[2], rand1s, rand2s, NULL};
         fflush(stdout);
         // execvp(strdup(command), args);
-        
-        // printf("Error: %d, %s\n", errno, strerror(errno));
-        printf("execvp failed\n");
+
+        // execl("/bin/toch", "toch", "temp", NULL);
+        //execlp
+        // execlp(command, args);
+        // char* ars[4] = {"ls", NULL};
+        // char* ars = "ls";
+        // execlp("ls", ars, "-l", NULL);
+        execvp(command, args);
+        printf("Error: %d, %s\n", errno, strerror(errno));
+        // printf("%s command failed\n", args[0]);
         exit(1);
     }
     wait(NULL);
@@ -65,7 +72,7 @@ int main(int argc, char *argv)
     // Set us a string that is the equivalent of the user typing exit to leave 
     // char exit[256];
     // strcpy(exit, "exit\n");
-
+    char* token_ONE;
     while(1)
     {
         printf("%s$ ", cwd);
@@ -82,10 +89,12 @@ int main(int argc, char *argv)
         int count = 0;
         // printf("Token(s):\n");
         // Go through every token using " " as the key to separate each
-        while(token != NULL)
-        {
+
+        // while(token != NULL)
+        // {
             if(count == 0)
             {
+                token_ONE = token;
                 //if the first token is cd, pwd, or exit, exicute the command and break loop
                 if(DEBUG && 1)
                 {
@@ -125,22 +134,61 @@ int main(int argc, char *argv)
             }
 
             // run command
-            char* args[3] = {"ls", "-l", NULL};
-            exe(token, args);
+            // char* args[3] = {"ls", "-l", NULL};
+            char* args[16];
+            args[0] = token_ONE;
+            // printf("First arg = %s\n", token_ONE);
+            
+            count = 1;
+            while (token != NULL)
+            {
+                token = strtok(NULL, s);
+                args[count] = token;
+                // printf("arg[%d] = %s\n", count, args[count]);
+                count++;
+            }
+            if(count == 2)
+            {
+                token_ONE[strlen(token_ONE) - 1] = 0;
+                args[0] = token_ONE;
+            }
+            else
+            {
+                // printf("%s", args[count-1]);
+                args[count-2][strlen(args[count-2]) - 1] = 0;
+            }
+            // if(count == 1)
+            // {
+            //     // printf("%s", token_ONE);
+            //     token_ONE[strlen(token_ONE) - 1] = 0;
+            //     args[0] = token_ONE;
+            // }
+            // else
+            // {
+            //     printf("%s", args[count-1]);
+            //     args[count-1][strlen(args[count-1]) - 1] = 0;
+            // }
 
-            printf(" %s", token);
-            token = strtok(NULL, s);
-            if(token != NULL)
-                printf("\n");
-            count++;
+            // args[count] = NULL;
+            
+            
+
+            exe(args[0], args);
+            
+
+            // printf(" %s", token);
+            // token = strtok(NULL, s);
+            // if(token != NULL)
+            //     printf("\n");
+            // count++;
 
 
         }
-        if(DEBUG && 0)
-        {
-            printf("%i token(s) read\n\n", count);
-        }
-    }    
+        // if(DEBUG && 0)
+        // {
+        //     printf("%i token(s) read\n\n", count);
+        // }
+    // }    
     return 0;
 
     /*
