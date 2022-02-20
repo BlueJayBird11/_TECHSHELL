@@ -84,6 +84,7 @@ int main(int argc, char *argv)
         // Go through every token using " " as the key to separate each
 
         token_ONE = token;
+        // printf("exit\n");
         if(!strcmp(token, "cd") || !strcmp(token, "pwd\n") || !strcmp(token, "exit\n"))
         {
             
@@ -132,39 +133,41 @@ int main(int argc, char *argv)
                 {
                     
 
+                    
+                    // malloc(128);
+                    if(!strcmp(token, ">"))
+                    {
+                        char* my_output_file = strtok(NULL, s);
+                        my_output_file[strlen(my_output_file) - 1] = 0;
+                        FILE* outfile = fopen(my_output_file, "w");
+                        dup2(fileno(outfile), 1);
+                        fclose(outfile);
+
+                        // count++;
+                        args[count] = NULL;
+                        placeholder = 0;
+                        break;
+                    }
+                    // printf("-------REACHED\n");
+                    if(!strcmp(token, "<"))
+                    {
+                        char* my_input_file = strtok(NULL, s);
+                        printf("%s", my_input_file);
+                        my_input_file[strlen(my_input_file) - 1] = 0;
+                        FILE* infile = fopen(my_input_file, "r");
+                        dup2(fileno(infile), 0);
+                        fclose(infile);
+
+                        // count++;
+                        args[count] = NULL;
+                        placeholder = 0;
+                        break;
+                    }
+                    // printf("-------REACHED\n");
+                    // printf("arg[%d] = %s\n", count, args[count]);
+                    
                     token = strtok(NULL, s);
                     args[count] = token;
-                    malloc(128);
-                    // if(!strcmp(token, ">"))
-                    // {
-                    //     char* my_output_file = strtok(NULL, s);
-                    //     my_output_file[strlen(my_output_file) - 1] = 0;
-                    //     FILE* outfile = fopen(my_output_file, "w");
-                    //     dup2(fileno(outfile), 1);
-                    //     fclose(outfile);
-
-                    //     // count++;
-                    //     args[count] = NULL;
-                    //     placeholder = 0;
-                    //     break;
-                    // }
-                    // printf("-------REACHED\n");
-                    // if(!strcmp(token, "<"))
-                    // {
-                    //     char* my_input_file = strtok(NULL, s);
-                    //     printf("%s", my_input_file);
-                    //     my_input_file[strlen(my_input_file) - 1] = 0;
-                    //     FILE* infile = fopen(my_input_file, "r");
-                    //     dup2(fileno(infile), 0);
-                    //     fclose(infile);
-
-                    //     // count++;
-                    //     args[count] = NULL;
-                    //     placeholder = 0;
-                    //     break;
-                    // }
-                    
-                    // printf("arg[%d] = %s\n", count, args[count]);
                     count++;
                 }
                 if(count == 2)
@@ -179,12 +182,13 @@ int main(int argc, char *argv)
                 }
                 else
                 {
+                    
+                    args[count-1] = NULL;
                     // printARGS(args);
+                    continue;
                 }
+                // printARGS(args);
                 
-                
-                
-
                 exe(args[0], args);
             }
 
