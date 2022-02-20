@@ -40,12 +40,7 @@ void exe(char* command, char* args[]) {
         fflush(stdout);
         // execvp(strdup(command), args);
 
-        // execl("/bin/toch", "toch", "temp", NULL);
-        //execlp
-        // execlp(command, args);
-        // char* ars[4] = {"ls", NULL};
-        // char* ars = "ls";
-        // execlp("ls", ars, "-l", NULL);
+        
         execvp(command, args);
         printf("Error: %d, %s\n", errno, strerror(errno));
         // printf("%s command failed\n", args[0]);
@@ -92,9 +87,10 @@ int main(int argc, char *argv)
 
         // while(token != NULL)
         // {
-            if(count == 0)
+        token_ONE = token;
+            if(!strcmp(token, "cd") || !strcmp(token, "pwd\n") || !strcmp(token, "exit\n"))
             {
-                token_ONE = token;
+                
                 //if the first token is cd, pwd, or exit, exicute the command and break loop
                 if(DEBUG && 1)
                 {
@@ -120,17 +116,24 @@ int main(int argc, char *argv)
                     //     exit(1);
                     // }
                     getcwd(cwd, MAX_SIZE);
-                    break;
+                    
                 }
                 else if(!strcmp(token, "pwd\n"))
                 {
                     printf("%s\n", cwd);
-                    break;
+                    
                 }
                 else if(!strcmp(token, "exit\n"))
                 {
                     exit(0);
                 }
+            }
+            else 
+            {
+            // printf("str==pwd: %d\n", strcmp(token, "pwd\n"));
+            if(strcmp(token, "pwd\n"))
+            {
+                
             }
 
             // run command
@@ -174,7 +177,7 @@ int main(int argc, char *argv)
             
 
             exe(args[0], args);
-            
+            }
 
             // printf(" %s", token);
             // token = strtok(NULL, s);
