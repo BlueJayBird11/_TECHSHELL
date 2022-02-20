@@ -20,6 +20,8 @@
 #define DEBUG 1
 #endif
 
+void printARGS(char* args[]);
+
 int changeCWD(char* input)
 {
     int change = chdir(input);
@@ -51,11 +53,7 @@ void exe(char* command, char* args[]) {
 
 int main(int argc, char *argv)
 {
-    // if(argc != 2)
-    // {
-    //     printf("Usage: ./prog2 <dir>\n");
-    //     return 0;
-    // }
+
     pid_t c1;
     char cwd[MAX_SIZE];
     getcwd(cwd, MAX_SIZE);
@@ -85,36 +83,27 @@ int main(int argc, char *argv)
         // printf("Token(s):\n");
         // Go through every token using " " as the key to separate each
 
-        // while(token != NULL)
-        // {
         token_ONE = token;
-            if(!strcmp(token, "cd") || !strcmp(token, "pwd\n") || !strcmp(token, "exit\n"))
+        if(!strcmp(token, "cd") || !strcmp(token, "pwd\n") || !strcmp(token, "exit\n"))
+        {
+            
+            //if the first token is cd, pwd, or exit, exicute the command and break loop
+            if(DEBUG && 1)
             {
-                
-                //if the first token is cd, pwd, or exit, exicute the command and break loop
-                if(DEBUG && 1)
+                // printf("str==pwd: %d\n", strcmp(token, "pwd\n"));
+                // printf("str==cd: %d\n", strcmp(token, "cd"));
+                // printf("str==pwd: %d\n", strcmp(token, "pwd\n"));
+            }
+            if(!strcmp(token, "cd"))
+            {        
+                token = strtok(NULL, s);
+                token[strlen(token) - 1] = 0; //remove the "/n" from the end of the string
+                if(DEBUG && 0)
                 {
-                    // printf("str==pwd: %d\n", strcmp(token, "pwd\n"));
-                    // printf("str==cd: %d\n", strcmp(token, "cd"));
-                    // printf("str==pwd: %d\n", strcmp(token, "pwd\n"));
-                }
-                if(!strcmp(token, "cd"))
-                {
-                    
-                    token = strtok(NULL, s);
-                    token[strlen(token) - 1] = 0; //remove the "/n" from the end of the string
-                    if(DEBUG && 0)
-                    {
-                        printf("cd to %s!\n", token);
+                    printf("cd to %s!\n", token);
                     }
                     changeCWD(token);
-                    //move cwd to 2nd arg
-                    // int change = chdir(argv[1]);
-                    // if (change == -1)
-                    // {
-                    //     printf("Can't chdir to %s\n", argv[1]);
-                    //     exit(1);
-                    // }
+                    
                     getcwd(cwd, MAX_SIZE);
                     
                 }
@@ -130,103 +119,93 @@ int main(int argc, char *argv)
             }
             else 
             {
-            // printf("str==pwd: %d\n", strcmp(token, "pwd\n"));
-            if(strcmp(token, "pwd\n"))
-            {
-                
-            }
-
-            // run command
-            // char* args[3] = {"ls", "-l", NULL};
-            char* args[16];
-            args[0] = token_ONE;
-            // printf("First arg = %s\n", token_ONE);
-            
-            count = 1;
-            while (token != NULL)
-            {
-                token = strtok(NULL, s);
-                args[count] = token;
-                // printf("arg[%d] = %s\n", count, args[count]);
-                count++;
-            }
-            if(count == 2)
-            {
-                token_ONE[strlen(token_ONE) - 1] = 0;
+                // printf("str==pwd: %d\n", strcmp(token, "pwd\n"))
+                // run command
+                // char* args[3] = {"ls", "-l", NULL};
+                char* args[16];
                 args[0] = token_ONE;
-            }
-            else
-            {
-                // printf("%s", args[count-1]);
-                args[count-2][strlen(args[count-2]) - 1] = 0;
-            }
-            // if(count == 1)
-            // {
-            //     // printf("%s", token_ONE);
-            //     token_ONE[strlen(token_ONE) - 1] = 0;
-            //     args[0] = token_ONE;
-            // }
-            // else
-            // {
-            //     printf("%s", args[count-1]);
-            //     args[count-1][strlen(args[count-1]) - 1] = 0;
-            // }
+                // printf("First arg = %s\n", token_ONE);
+                
+                count = 1;
+                int placeholder = 1;
+                while (token != NULL)
+                {
+                    
 
-            // args[count] = NULL;
+                    token = strtok(NULL, s);
+                    args[count] = token;
+                    malloc(128);
+                    // if(!strcmp(token, ">"))
+                    // {
+                    //     char* my_output_file = strtok(NULL, s);
+                    //     my_output_file[strlen(my_output_file) - 1] = 0;
+                    //     FILE* outfile = fopen(my_output_file, "w");
+                    //     dup2(fileno(outfile), 1);
+                    //     fclose(outfile);
+
+                    //     // count++;
+                    //     args[count] = NULL;
+                    //     placeholder = 0;
+                    //     break;
+                    // }
+                    // printf("-------REACHED\n");
+                    // if(!strcmp(token, "<"))
+                    // {
+                    //     char* my_input_file = strtok(NULL, s);
+                    //     printf("%s", my_input_file);
+                    //     my_input_file[strlen(my_input_file) - 1] = 0;
+                    //     FILE* infile = fopen(my_input_file, "r");
+                    //     dup2(fileno(infile), 0);
+                    //     fclose(infile);
+
+                    //     // count++;
+                    //     args[count] = NULL;
+                    //     placeholder = 0;
+                    //     break;
+                    // }
+                    
+                    // printf("arg[%d] = %s\n", count, args[count]);
+                    count++;
+                }
+                if(count == 2)
+                {
+                    token_ONE[strlen(token_ONE) - 1] = 0;
+                    args[0] = token_ONE;
+                }
+                else if(placeholder)
+                {
+                    // printf("%s", args[count-1]);
+                    args[count-2][strlen(args[count-2]) - 1] = 0;
+                }
+                else
+                {
+                    // printARGS(args);
+                }
+                
+                
+                
+
+                exe(args[0], args);
+            }
+
             
-            
-
-            exe(args[0], args);
-            }
-
-            // printf(" %s", token);
-            // token = strtok(NULL, s);
-            // if(token != NULL)
-            //     printf("\n");
-            // count++;
 
 
         }
-        // if(DEBUG && 0)
-        // {
-        //     printf("%i token(s) read\n\n", count);
-        // }
-    // }    
+
     return 0;
+}
+void printARGS(char* args[])
 
-    /*
-
-    // where the fork happens, everything in the if is what the child is doing
-    if ((c1 = fork()) == 0)
+{
+    char* token;
+    int count = 0;
+    token = args[count];
+    while (token != NULL)
     {
-        printf("Current working directory: %s\n", cwd);
-        printf("Executing ls %s --all -l --human-readable\n", argv[1]);
-        
-        int change = chdir(argv[1]);
-        if (change == -1)
-        {
-            printf("Can't chdir to %s\n", argv[1]);
-            exit(1);
-        }
-        //// All the comments here were me just trying to figure out how to use ls in c
-        // char* args[6] = {"ls", newcwd, "--all", "-l", "--human-readable", NULL};
-        fflush(stdout);
-        // execl(newcwd, "ls", "--all", "-l", "--human-readable", NULL);
-        execl("/bin/ls", "ls", "--all", "-l", "--human-readable", argv[1], NULL);
-        // execv(newcwd, args);
-        // execl("bin/ls", "ls", "-la", "-l", "-h", NULL);
-        // printf("Failed\n");
-        exit(1); // exit with 1 in case the line failed, which would be a error in the code
+        printf("%s ", token);
+        token = args[count];
+        count++;
     }
-
-    int status;
-    // wait for child to finish and get the exit status
-    waitpid(c1, &status, 0);
-    if (WIFEXITED(status))
-    {
-        const int es = WEXITSTATUS(status);
-        printf("Exit status: %d\n", es);
-    }
-    exit(0);
-    */
+    printf("\n");
 }
