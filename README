@@ -1,0 +1,53 @@
+Names: Jay Reich, Josiah Norman
+
+FUNCTION printARGS
+    Used for debugging purposes
+    Not used in final code
+    Prints the list of arguments
+
+FUNCTION changeCWD
+    Changes the curent working directory
+    Includes error check
+    Is called if cd is seen
+
+FUNCTION exe
+    This takes the given command and arguments to 
+    execute via execvp in the child
+    Includes error check
+
+
+Within MAIN FUNCTION
+
+SECTION 1
+    Variable set up
+
+SECTION 2
+    Starts infinite loop
+    Print out the command line and wait for an input
+    tokenizes the first string by " "
+    Sets up varibales for the next sections
+
+SECTION 3
+    Handles the built-in support commands
+        pwd, cd, and exit
+
+SECTION 4 A
+    This section starts if the initial token is not
+    a built-in support operator
+
+    It tokenizes all the arguments into a list of 
+    strings called args
+
+    It also checks to see if any argument is a call
+    for piping input or output
+        Our piping is not working currently
+
+SECTION 4 B
+    Handles outlier conditions
+        Removes "/n" from arguments
+        Adds NULL if not already there
+            This one happens with piping
+    
+    Uses the exe FUNCTION to execute the command
+    
+    
