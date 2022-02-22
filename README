@@ -50,4 +50,8 @@ SECTION 4 B
     
     Uses the exe FUNCTION to execute the command
     
-    
+ERRORS
+    Redirection
+        -It does the command properly and uses the right arguments,
+        however when it is used the program will put the first charater of
+        the first argument into the output line twice and crash the program

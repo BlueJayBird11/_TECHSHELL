@@ -1,6 +1,6 @@
 //////////////////////////////////////////
 // Name: Jay Reich, Josiah Norman
-// Date: Feburary __, 2022
+// Date: Feburary 21, 2022
 // Descriptions: Programming Assignment #3
 //////////////////////////////////////////
 
@@ -24,7 +24,6 @@ void printARGS(char* args[]);
 
 int changeCWD(char* input);
 
-
 void exe(char* command, char* args[]);
 
 int main(int argc, char *argv)
@@ -33,7 +32,7 @@ int main(int argc, char *argv)
     char cwd[MAX_SIZE];
     getcwd(cwd, MAX_SIZE);
 
-    char str[MAX_SIZE];
+    
     // This is the token that is used to split the string
     const char s[2] = " ";
     char *token;
@@ -43,15 +42,15 @@ int main(int argc, char *argv)
     while(1)
     {
         //Print out base line with the cwd
+        char str[MAX_SIZE];
         printf("%s$ ", cwd);
         //Get the user's input
         fgets(str, MAX_SIZE, stdin);
 
-        
         token = strtok(str, s);
         int count = 0;
-
         token_ONE = token;
+
         // SECTION 3 START
         if(!strcmp(token, "cd") || !strcmp(token, "pwd\n") || !strcmp(token, "exit\n"))
         {
@@ -64,7 +63,6 @@ int main(int argc, char *argv)
                 
                 changeCWD(token);
                 getcwd(cwd, MAX_SIZE);
-                    
             }
             else if(!strcmp(token, "pwd\n"))
             {
@@ -84,17 +82,21 @@ int main(int argc, char *argv)
             
             count = 1;
             int placeholder = 1;
+            char* my_output_file;
+            char* my_input_file;
             while (token != NULL)
             {
                 // checks for piping operands
                 if(!strcmp(token, ">"))
                 {
-                    char* my_output_file = strtok(NULL, s);
+                    my_output_file = strtok(NULL, s);                    
                     my_output_file[strlen(my_output_file) - 1] = 0;
+
                     FILE* outfile = fopen(my_output_file, "w");
                     dup2(fileno(outfile), 1);
                     fclose(outfile);
 
+                    // printf("--REACHED\n");
                     args[count] = NULL;
                     placeholder = 0;
                     break;
@@ -102,19 +104,23 @@ int main(int argc, char *argv)
 
                 if(!strcmp(token, "<"))
                 {
-                    char* my_input_file = strtok(NULL, s);
-                    printf("%s", my_input_file);
+                    my_input_file = strtok(NULL, s);
                     my_input_file[strlen(my_input_file) - 1] = 0;
+                    
+                    // printf("%s\n", my_input_file);
+
                     FILE* infile = fopen(my_input_file, "r");
                     dup2(fileno(infile), 0);
                     fclose(infile);
+
+                    // printf("---REACHED");
 
                     args[count] = NULL;
                     placeholder = 0;
                     break;
                 }
 
-                // tokenizes the string and adds it to the list        
+                // tokenizes the string and adds it to the list
                 token = strtok(NULL, s);
                 args[count] = token;
                 count++;
@@ -134,7 +140,7 @@ int main(int argc, char *argv)
             {
                 
                 args[count-1] = NULL;
-                continue;
+                // continue;
             }
             // printARGS(args);
             
@@ -179,6 +185,7 @@ void exe(char* command, char* args[])
         // Shows error if execvp fails
         printf("Error: %d, %s\n", errno, strerror(errno));
         exit(1);
-    }
+    }else{
     wait(NULL);
+    }
 }
