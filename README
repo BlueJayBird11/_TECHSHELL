@@ -1,5 +1,7 @@
 Names: Jay Reich, Josiah Norman
 
+This was a program made to emulate a terminal. Was the final project for CSC 222.
+
 FUNCTION printARGS
     Used for debugging purposes
     Not used in final code
